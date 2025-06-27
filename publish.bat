@@ -1,49 +1,49 @@
 @echo off
 echo ========================================
-echo       SpeakerSwitch 发布工具
+echo       SpeakerSwitch Publishing Tool
 echo ========================================
 echo.
-echo 请选择发布类型：
-echo 1. 依赖框架版本 (小文件，需要.NET运行时)
-echo 2. 独立版本 (大文件，包含运行时)
-echo 3. 单文件版本 (推荐，便于分发)
+echo Please select publishing type:
+echo 1. Framework-dependent (Small file, requires .NET runtime)
+echo 2. Self-contained (Large file, includes runtime)
+echo 3. Single file (Recommended, easy to distribute)
 echo.
-set /p choice=请输入选择 (1-3): 
+set /p choice=Please enter your choice (1-3): 
 
 if "%choice%"=="1" goto framework
 if "%choice%"=="2" goto standalone
 if "%choice%"=="3" goto singlefile
-echo 无效选择，默认使用单文件版本
+echo Invalid choice, using single file version by default
 goto singlefile
 
 :framework
 echo.
-echo 正在发布依赖框架版本...
+echo Publishing framework-dependent version...
 dotnet publish -c Release -r win-x64 --self-contained false -o publish
-echo 发布完成！文件位于: publish\SpeakerSwitch.exe
-echo 注意：目标机器需要安装.NET 9.0运行时
+echo Publishing completed! File location: publish\SpeakerSwitch.exe
+echo Note: Target machine requires .NET 9.0 runtime installed
 goto end
 
 :standalone
 echo.
-echo 正在发布独立版本...
+echo Publishing self-contained version...
 dotnet publish -c Release -r win-x64 --self-contained true -o publish-standalone
-echo 发布完成！文件位于: publish-standalone\SpeakerSwitch.exe
-echo 注意：文件较大但可在任何Windows机器上运行
+echo Publishing completed! File location: publish-standalone\SpeakerSwitch.exe
+echo Note: Larger file size but runs on any Windows machine
 goto end
 
 :singlefile
 echo.
-echo 正在发布单文件版本...
+echo Publishing single file version...
 dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish-single
-echo 发布完成！文件位于: publish-single\SpeakerSwitch.exe
-echo 推荐：单个exe文件，便于分发和使用
+echo Publishing completed! File location: publish-single\SpeakerSwitch.exe
+echo Recommended: Single exe file, easy to distribute and use
 goto end
 
 :end
 echo.
 echo ========================================
-echo 发布完成！您可以将exe文件复制到任何位置使用。
-echo 建议创建桌面快捷方式或设置快捷键。
+echo Publishing completed! You can copy the exe file to any location.
+echo Suggestion: Create desktop shortcut or set hotkeys.
 echo ========================================
 pause
